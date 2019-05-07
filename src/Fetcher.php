@@ -77,7 +77,7 @@ class Fetcher
      * @param string $url
      * @return string|null
      */
-    private function getImageUrlFromWebPage(string $url): ?string
+    public function getImageUrlFromWebPage(string $url): ?string
     {
         $crawler = $this->getGoutteClient()->request('GET', $url);
         $node = $crawler->filterXPath('//meta[@property="og:image"]')->first();
