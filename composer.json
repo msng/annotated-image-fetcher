@@ -19,6 +19,11 @@
             "msng\\AnnotatedImageFetcher\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "msng\\AnnotatedImageFetcher\\Tests\\": "tests"
+        }
+    },
     "authors": [
         {
             "name": "msng",

@@ -21,8 +21,25 @@ class SafeSearchAnnotation
         self::RACY => Likelihood::UNKNOWN
     ];
 
+    public function __construct(array $likelihoods = null)
+    {
+        $categories = [
+            self::ADULT,
+            self::SPOOF,
+            self::MEDICAL,
+            self::VIOLENCE,
+            self::RACY,
+        ];
+
+        foreach ($categories as $category) {
+            if (isset($likelihoods[$category])) {
+                $this->likelihoods[$category] = $likelihoods[$category];
+            }
+        }
+    }
+
     /**
-     * @param int $adult
+     * @param  int  $adult
      * @return SafeSearchAnnotation
      */
     public function setAdult(int $adult): SafeSearchAnnotation
@@ -41,7 +58,7 @@ class SafeSearchAnnotation
     }
 
     /**
-     * @param int $spoof
+     * @param  int  $spoof
      * @return SafeSearchAnnotation
      */
     public function setSpoof(int $spoof): SafeSearchAnnotation
@@ -60,7 +77,7 @@ class SafeSearchAnnotation
     }
 
     /**
-     * @param int $medical
+     * @param  int  $medical
      * @return SafeSearchAnnotation
      */
     public function setMedical(int $medical): SafeSearchAnnotation
@@ -79,7 +96,7 @@ class SafeSearchAnnotation
     }
 
     /**
-     * @param int $violence
+     * @param  int  $violence
      * @return SafeSearchAnnotation
      */
     public function setViolence(int $violence): SafeSearchAnnotation
@@ -98,7 +115,7 @@ class SafeSearchAnnotation
     }
 
     /**
-     * @param int $racy
+     * @param  int  $racy
      * @return SafeSearchAnnotation
      */
     public function setRacy(int $racy): SafeSearchAnnotation
