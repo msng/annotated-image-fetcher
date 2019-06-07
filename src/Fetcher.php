@@ -27,7 +27,7 @@ class Fetcher
     }
 
     /**
-     * @param string $pageUrl
+     * @param  string  $pageUrl
      * @return AnnotatedImage|null Returns null if no og:image is found on the web page.
      * @throws ApiException
      * @throws GuzzleException
@@ -43,7 +43,7 @@ class Fetcher
     }
 
     /**
-     * @param string $imageUrl
+     * @param  string  $imageUrl
      * @return AnnotatedImage
      * @throws ApiException
      * @throws GuzzleException
@@ -63,18 +63,7 @@ class Fetcher
     }
 
     /**
-     * @param array $config
-     * @return GuzzleClient
-     */
-    private function createGuzzleClient(array $config = []): GuzzleClient
-    {
-        $guzzleClient = new GuzzleClient($config);
-
-        return $guzzleClient;
-    }
-
-    /**
-     * @param string $url
+     * @param  string  $url
      * @return string|null
      */
     public function getImageUrlFromWebPage(string $url): ?string
@@ -92,37 +81,12 @@ class Fetcher
     }
 
     /**
-     * @return GoutteClient
-     */
-    private function getGoutteClient(): GoutteClient
-    {
-        if (is_null($this->goutteClient)) {
-            $this->goutteClient = (new GoutteClient())->setClient($this->guzzleClient);
-        }
-
-        return $this->goutteClient;
-    }
-
-    /**
-     * @param string $url
-     * @return string
-     * @throws GuzzleException
-     */
-    private function download(string $url): string
-    {
-        $image = $this->guzzleClient->request('GET', $url);
-        $imageContent = $image->getBody()->getContents();
-
-        return $imageContent;
-    }
-
-    /**
-     * @param string $image
+     * @param  string  $image
      * @return SafeSearchAnnotation
      * @throws ApiException
      * @throws ValidationException
      */
-    private function safeSearch(string $image): SafeSearchAnnotation
+    public function safeSearch(string $image): SafeSearchAnnotation
     {
         $imageAnnotator = new ImageAnnotatorClient(['key' => '']);
         $response = $imageAnnotator->safeSearchDetection($image);
@@ -136,6 +100,42 @@ class Fetcher
             ->setRacy($result->getRacy());
 
         return $safeSearchAnnotation;
+    }
+
+    /**
+     * @param  array  $config
+     * @return GuzzleClient
+     */
+    private function createGuzzleClient(array $config = []): GuzzleClient
+    {
+        $guzzleClient = new GuzzleClient($config);
+
+        return $guzzleClient;
+    }
+
+    /**
+     * @return GoutteClient
+     */
+    private function getGoutteClient(): GoutteClient
+    {
+        if (is_null($this->goutteClient)) {
+            $this->goutteClient = (new GoutteClient())->setClient($this->guzzleClient);
+        }
+
+        return $this->goutteClient;
+    }
+
+    /**
+     * @param  string  $url
+     * @return string
+     * @throws GuzzleException
+     */
+    private function download(string $url): string
+    {
+        $image = $this->guzzleClient->request('GET', $url);
+        $imageContent = $image->getBody()->getContents();
+
+        return $imageContent;
     }
 
 }
